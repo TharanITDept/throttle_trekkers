@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Throttle Trekkers | Born to Ride</title>
+  <meta name="description" content="Throttle Trekkers – a brotherhood of passionate motorcycle riders united by the thrill of the open road." />
+  <link rel="icon" type="image/png" href="logo.PNG" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Brand colours extracted from logo */
+      --navy:        #1B2D6B;
+      --navy-dark:   #0f1a40;
+      --navy-deep:   #0a1128;
+      --navy-mid:    #243580;
+      --orange:      #F07B1D;
+      --orange-dark: #c9620e;
+      --orange-glow: rgba(240,123,29,0.18);
+      --teal:        #3aadcf;
+      --green:       #4a9a3e;
+      --white:       #f4f1ec;
+      --offwhite:    #e8e4dc;
+      --grey:        #8a9ab5;
+      --border:      #243580;
+      --panel:       #131e4a;
+      --card:        #192358;
+
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-cond:    'Barlow Condensed', sans-serif;
+      --font-body:    'Barlow', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy-deep);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── SHARED ────────────────────────────────────── */
+    .section-tag {
+      font-family: var(--font-cond);
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 0.88;
+      margin-bottom: 28px;
+    }
+
+    .section-lead {
+      font-size: 16px; font-weight: 300;
+      color: var(--grey);
+      line-height: 1.85;
+      max-width: 560px;
+    }
+
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+
+    section { padding: 100px 24px; }
+
+    /* ── BUTTONS ───────────────────────────────────── */
+    .btn-orange {
+      display: inline-block;
+      background: var(--orange);
+      color: #fff;
+      font-family: var(--font-cond);
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 15px 40px;
+      transition: background 0.2s, transform 0.2s;
+      border: none; cursor: pointer;
+    }
+    .btn-orange:hover { background: var(--orange-dark); transform: translateY(-2px); }
+
+    .btn-outline-white {
+      display: inline-block;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: var(--white);
+      font-family: var(--font-cond);
+      font-size: 14px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 15px 40px;
+      transition: border-color 0.2s, transform 0.2s, background 0.2s;
+    }
+    .btn-outline-white:hover {
+      border-color: var(--orange);
+      background: rgba(240,123,29,0.1);
+      transform: translateY(-2px);
+    }
+
+    .btn-navy {
+      display: inline-block;
+      background: var(--navy-deep);
+      color: var(--white);
+      font-family: var(--font-cond);
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 15px 40px;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-navy:hover { background: var(--navy); transform: translateY(-2px); }
+
+    /* ── NAV ───────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 36px;
+      background: rgba(10,17,40,0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(36,53,128,0.6);
+      transition: background 0.3s;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .nav-logo img {
+      height: 52px; width: auto;
+      /* logo has black bg — mix-blend trick makes it transparent-ish */
+      mix-blend-mode: lighten;
+      filter: brightness(1.05);
+    }
+
+    .nav-logo-text {
+      display: flex; flex-direction: column; line-height: 1;
+    }
+
+    .nav-logo-text .t1 {
+      font-family: var(--font-display);
+      font-size: 20px; letter-spacing: 3px;
+      color: var(--white);
+    }
+
+    .nav-logo-text .t2 {
+      font-family: var(--font-cond);
+      font-size: 11px; letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--orange);
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+    }
+
+    .nav-links a {
+      font-family: var(--font-cond);
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--grey);
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 2px; background: var(--orange);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-cta {
+      background: var(--orange) !important;
+      color: #fff !important;
+      padding: 9px 22px;
+      font-weight: 700 !important;
+      letter-spacing: 2px !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--orange-dark) !important; }
+    .nav-cta::after { display: none !important; }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); transition: all 0.3s; }
+
+    /* ── MOBILE MENU ───────────────────────────────── */
+    .mobile-menu {
+      display: none;
+      position: fixed; inset: 0;
+      background: var(--navy-deep);
+      z-index: 999;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 32px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--font-display); font-size: 36px;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--white); transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--orange); }
+    .mobile-close {
+      position: absolute; top: 22px; right: 26px;
+      background: none; border: none; color: var(--white);
+      font-size: 30px; cursor: pointer;
+    }
+    .mobile-menu img.mob-logo { height: 80px; mix-blend-mode: lighten; margin-bottom: 8px; }
+
+    /* ── HERO ──────────────────────────────────────── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, var(--navy-deep) 0%, var(--navy-dark) 50%, #0c1530 100%);
+    }
+
+    /* diagonal stripe texture */
+    .hero-bg::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        -52deg,
+        transparent 0px, transparent 70px,
+        rgba(240,123,29,0.035) 70px, rgba(240,123,29,0.035) 71px
+      );
+    }
+
+    /* orange glow orb */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(240,123,29,0.14) 0%, transparent 70%);
+      bottom: -200px; right: -100px;
+      pointer-events: none;
+    }
+
+    /* navy glow orb */
+    .hero-orb2 {
+      position: absolute;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(27,45,107,0.5) 0%, transparent 70%);
+      top: -100px; left: -80px; pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      padding: 140px 24px 100px;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(36px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-logo {
+      width: min(280px, 55vw);
+      mix-blend-mode: lighten;
+      filter: brightness(1.1) drop-shadow(0 0 40px rgba(240,123,29,0.4));
+      margin-bottom: 32px;
+      animation: fadeUp 0.9s 0.1s ease both;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-cond);
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 6px; text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 16px;
+      animation: fadeUp 0.9s 0.2s ease both;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(58px, 11vw, 140px);
+      line-height: 0.87;
+      letter-spacing: -1px;
+      margin-bottom: 10px;
+      animation: fadeUp 0.9s 0.25s ease both;
+    }
+
+    .hero-title .hl { color: var(--orange); }
+
+    .hero-sub {
+      font-family: var(--font-cond);
+      font-size: clamp(16px, 2.5vw, 22px);
+      font-weight: 300; letter-spacing: 7px;
+      text-transform: uppercase; color: var(--grey);
+      margin-bottom: 48px;
+      animation: fadeUp 0.9s 0.35s ease both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.9s 0.45s ease both;
+    }
+
+    /* orange divider bar */
+    .hero-divider {
+      width: 80px; height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--teal));
+      margin: 24px auto 32px;
+      animation: fadeUp 0.9s 0.3s ease both;
+    }
+
+    .hero-scroll {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-family: var(--font-cond); font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--grey);
+    }
+    .hero-scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--orange), transparent);
+      animation: scrollAnim 2s ease infinite;
+    }
+    @keyframes scrollAnim {
+      0%,100% { opacity: 0.4; } 50% { opacity: 1; }
+    }
+
+    /* ── STATS ─────────────────────────────────────── */
+    #stats {
+      background: var(--navy);
+      border-top: 2px solid var(--orange);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+
+    .stats-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat-item {
+      text-align: center; padding: 40px 20px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      transition: background 0.3s;
+    }
+    .stat-item:hover { background: rgba(240,123,29,0.08); }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 6vw, 72px);
+      color: var(--orange);
+      line-height: 1; margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-family: var(--font-cond);
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .stat-icon {
+      font-size: 24px; margin-bottom: 8px; display: block;
+    }
+
+    /* ── ABOUT ─────────────────────────────────────── */
+    #about { background: var(--navy-dark); }
+
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+
+    .about-visual { position: relative; }
+
+    .about-logo-showcase {
+      width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(ellipse at center, rgba(240,123,29,0.12) 0%, transparent 70%);
+      padding: 40px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-logo-showcase::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent 0px, transparent 20px,
+        rgba(27,45,107,0.3) 20px, rgba(27,45,107,0.3) 21px
+      );
+    }
+
+    .about-logo-showcase img {
+      width: min(320px, 80%);
+      mix-blend-mode: lighten;
+      filter: brightness(1.05) drop-shadow(0 8px 32px rgba(240,123,29,0.3));
+      position: relative; z-index: 1;
+      animation: floatLogo 4s ease-in-out infinite;
+    }
+
+    @keyframes floatLogo {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-12px); }
+    }
+
+    .about-corner {
+      position: absolute;
+      width: 40px; height: 40px;
+      border-color: var(--orange);
+      border-style: solid;
+    }
+    .about-corner.tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; }
+    .about-corner.tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; }
+    .about-corner.bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; }
+    .about-corner.br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; }
+
+    .about-text {}
+
+    .about-values {
+      margin-top: 36px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+
+    .value-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--orange);
+      padding: 20px;
+      transition: transform 0.3s, border-top-color 0.3s;
+    }
+    .value-card:nth-child(2) { border-top-color: var(--teal); }
+    .value-card:nth-child(3) { border-top-color: var(--teal); }
+    .value-card:nth-child(4) { border-top-color: var(--green); }
+    .value-card:hover { transform: translateY(-4px); }
+
+    .value-card h4 {
+      font-family: var(--font-cond);
+      font-size: 14px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 6px; color: var(--white);
+    }
+
+    .value-card p { font-size: 13px; color: var(--grey); line-height: 1.65; }
+
+    .value-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+
+    /* ── GALLERY ───────────────────────────────────── */
+    #gallery { background: var(--panel); }
+
+    .gallery-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 48px; flex-wrap: wrap; gap: 20px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 10px;
+    }
+
+    .g-item {
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      position: relative; cursor: pointer;
+      min-height: 180px;
+    }
+
+    .g-item::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(240,123,29,0.7) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .g-item:hover::after { opacity: 1; }
+
+    .g-item img,
+    .g-item .g-ph {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .g-item:hover img, .g-item:hover .g-ph { transform: scale(1.06); }
+
+    .g-ph {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 8px; min-height: 180px;
+      font-family: var(--font-cond); font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--border);
+    }
+    .g-ph span { font-size: 28px; }
+
+    .g-label {
+      position: absolute; bottom: 12px; left: 14px; z-index: 2;
+      font-family: var(--font-cond); font-size: 12px;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .g-item:hover .g-label { opacity: 1; }
+
+    /* asymmetric layout */
+    .g-1 { grid-column: span 5; grid-row: span 2; }
+    .g-2 { grid-column: span 4; }
+    .g-3 { grid-column: span 3; }
+    .g-4 { grid-column: span 4; }
+    .g-5 { grid-column: span 3; }
+    .g-6 { grid-column: span 4; }
+    .g-7 { grid-column: span 4; grid-row: span 2; }
+    .g-8 { grid-column: span 4; }
+
+    .gallery-note {
+      margin-top: 20px; text-align: center;
+      font-family: var(--font-cond); font-size: 13px;
+      letter-spacing: 1px; color: var(--grey);
+    }
+
+    .gallery-note a { color: var(--orange); }
+
+    /* ── RIDES ─────────────────────────────────────── */
+    #rides { background: var(--navy-deep); }
+
+    .rides-intro {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 52px; flex-wrap: wrap; gap: 20px;
+    }
+
+    .rides-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+    }
+
+    .ride-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .ride-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(240,123,29,0.15);
+    }
+
+    .ride-card-img {
+      height: 190px; overflow: hidden; position: relative;
+    }
+    .ride-card-img .g-ph { min-height: 190px; }
+
+    .ride-tag {
+      position: absolute; top: 14px; left: 14px;
+      background: var(--orange);
+      font-family: var(--font-cond);
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 4px 10px; z-index: 2;
+    }
+
+    .ride-body { padding: 24px; }
+
+    .ride-date {
+      font-family: var(--font-cond); font-size: 12px;
+      font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .ride-name {
+      font-family: var(--font-cond); font-size: 22px;
+      font-weight: 700; letter-spacing: 0.5px; margin-bottom: 10px;
+    }
+
+    .ride-desc {
+      font-size: 13px; color: var(--grey);
+      line-height: 1.75; margin-bottom: 20px;
+    }
+
+    .ride-meta {
+      display: flex; gap: 18px;
+      font-family: var(--font-cond); font-size: 12px;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--grey);
+      border-top: 1px solid var(--border); padding-top: 16px;
+    }
+    .ride-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── JOIN CTA ──────────────────────────────────── */
+    #join {
+      background: var(--orange);
+      padding: 90px 24px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+
+    #join::before {
+      content: 'THROTTLE TREKKERS';
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: 18vw; color: rgba(0,0,0,0.1);
+      white-space: nowrap; letter-spacing: -2px;
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* diagonal lines */
+    #join::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        -52deg,
+        transparent 0px, transparent 30px,
+        rgba(255,255,255,0.04) 30px, rgba(255,255,255,0.04) 31px
+      );
+      z-index: 0;
+    }
+
+    #join .section-inner { position: relative; z-index: 1; }
+
+    #join .section-tag { color: rgba(255,255,255,0.7); }
+    #join .section-title { color: #fff; margin-bottom: 20px; }
+    #join p { font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.85); max-width: 500px; margin: 0 auto 36px; line-height: 1.8; }
+
+    /* ── RIDER CODE ────────────────────────────────── */
+    #code { background: var(--navy-dark); }
+
+    .code-layout {
+      display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: center;
+    }
+
+    .code-rules { display: flex; flex-direction: column; }
+
+    .code-rule {
+      display: flex; gap: 24px; align-items: flex-start;
+      padding: 22px 0; border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .code-rule:first-child { border-top: 1px solid var(--border); }
+
+    .rule-num {
+      font-family: var(--font-display);
+      font-size: 52px; color: var(--border); line-height: 1;
+      flex-shrink: 0; min-width: 64px;
+      transition: color 0.3s;
+    }
+    .code-rule:hover .rule-num { color: var(--orange); }
+
+    .rule-body h4 {
+      font-family: var(--font-cond); font-size: 17px;
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .rule-body p { font-size: 13px; color: var(--grey); line-height: 1.7; }
+
+    /* Shield visual */
+    .code-shield {
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .shield-wrap {
+      position: relative; width: 320px;
+    }
+
+    .shield-wrap img {
+      width: 100%;
+      mix-blend-mode: lighten;
+      filter: brightness(1.08) drop-shadow(0 0 40px rgba(240,123,29,0.35));
+      animation: floatLogo 5s ease-in-out infinite;
+    }
+
+    .shield-ring {
+      position: absolute; inset: -20px;
+      border-radius: 50%;
+      border: 1px solid rgba(240,123,29,0.2);
+      animation: ringPulse 3s ease infinite;
+    }
+    .shield-ring2 {
+      position: absolute; inset: -40px;
+      border-radius: 50%;
+      border: 1px solid rgba(240,123,29,0.1);
+      animation: ringPulse 3s 1s ease infinite;
+    }
+
+    @keyframes ringPulse {
+      0%,100% { opacity: 0.5; transform: scale(1); }
+      50%      { opacity: 1;   transform: scale(1.02); }
+    }
+
+    /* ── INSTAGRAM ─────────────────────────────────── */
+    #instagram { background: var(--panel); }
+
+    .ig-header { text-align: center; margin-bottom: 48px; }
+
+    .ig-handle-link {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-top: 14px;
+      font-family: var(--font-cond); font-size: 16px;
+      font-weight: 600; letter-spacing: 2px;
+      color: var(--grey); transition: color 0.2s;
+    }
+    .ig-handle-link:hover { color: var(--orange); }
+
+    .ig-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+    }
+
+    .ig-cell {
+      aspect-ratio: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform 0.3s;
+    }
+    .ig-cell:hover { transform: scale(0.97); }
+
+    .ig-cell-over {
+      position: absolute; inset: 0;
+      background: rgba(240,123,29,0.85);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s;
+      font-family: var(--font-display);
+      font-size: 14px; letter-spacing: 3px;
+    }
+    .ig-cell:hover .ig-cell-over { opacity: 1; }
+
+    .ig-ph {
+      font-size: 32px; color: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 100%; min-height: 140px;
+    }
+
+    .ig-cta { text-align: center; margin-top: 40px; }
+
+    /* ── FOOTER ────────────────────────────────────── */
+    footer {
+      background: var(--navy-deep);
+      border-top: 2px solid var(--orange);
+      padding: 64px 24px 30px;
+    }
+
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 56px; margin-bottom: 56px;
+    }
+
+    .footer-brand img {
+      height: 80px; mix-blend-mode: lighten;
+      filter: brightness(1.05);
+      margin-bottom: 16px;
+    }
+
+    .footer-brand p {
+      font-size: 13px; color: var(--grey);
+      line-height: 1.85; max-width: 280px; margin-bottom: 24px;
+    }
+
+    .footer-socials { display: flex; gap: 10px; }
+
+    .soc-btn {
+      width: 38px; height: 38px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--grey); transition: all 0.2s;
+    }
+    .soc-btn:hover { border-color: var(--orange); background: var(--orange); color: #fff; }
+
+    .footer-col h5 {
+      font-family: var(--font-cond); font-size: 12px;
+      font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--white);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--orange);
+      display: inline-block;
+    }
+
+    .footer-col a {
+      display: block; font-size: 13px; color: var(--grey);
+      margin-bottom: 10px; transition: color 0.2s; letter-spacing: 0.3px;
+    }
+    .footer-col a:hover { color: var(--orange); }
+
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--border); padding-top: 28px;
+      font-family: var(--font-cond); font-size: 12px;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--grey);
+    }
+
+    .footer-bottom .logo-sm {
+      height: 36px; mix-blend-mode: lighten;
+    }
+
+    /* ── COUNT UP ──────────────────────────────────── */
+    .count-up { display: inline-block; }
+
+    /* ── RESPONSIVE ────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .rides-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .code-layout { grid-template-columns: 1fr; }
+      .code-shield { display: none; }
+      .ig-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 18px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .stat-item:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.08); border-top: 1px solid rgba(255,255,255,0.08); }
+      .stat-item:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.08); border-right: none; }
+
+      .rides-grid { grid-template-columns: 1fr; }
+      .about-values { grid-template-columns: 1fr; }
+
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .g-1,.g-2,.g-3,.g-4,.g-5,.g-6,.g-7,.g-8 { grid-column: span 1; grid-row: span 1; }
+
+      .ig-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-top { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; gap: 14px; text-align: center; }
+      .gallery-header { flex-direction: column; align-items: flex-start; }
+      .rides-intro { flex-direction: column; align-items: flex-start; }
+      section { padding: 72px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <img src="logo.PNG" alt="Throttle Trekkers Logo" />
+    <div class="nav-logo-text">
+      <span class="t1">THROTTLE TREKKERS</span>
+      <span class="t2">Born to Ride · Live to Explore</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#rides">Rides</a></li>
+    <li><a href="#code">Rider Code</a></li>
+    <li><a href="#instagram">Instagram</a></li>
+    <li><a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank" class="nav-cta">Join Us</a></li>
+  </ul>
+
+  <button class="hamburger" id="menuToggle" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="menuClose">✕</button>
+  <img src="logo.PNG" alt="Logo" class="mob-logo" />
+  <a href="#about"     onclick="closeMob()">About</a>
+  <a href="#gallery"   onclick="closeMob()">Gallery</a>
+  <a href="#rides"     onclick="closeMob()">Rides</a>
+  <a href="#code"      onclick="closeMob()">Rider Code</a>
+  <a href="#instagram" onclick="closeMob()">Instagram</a>
+  <a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank">Join Us</a>
+</div>
+
+<!-- ── HERO ─────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb2"></div>
+
+  <div class="hero-content">
+    <img src="logo.PNG" alt="Throttle Trekkers" class="hero-logo" />
+    <p class="hero-eyebrow">Born to Ride &nbsp;·&nbsp; Live to Explore &nbsp;·&nbsp; Ride Together</p>
+    <h1 class="hero-title">THROTTLE<br><span class="hl">TREKKERS</span></h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub">Brotherhood &nbsp;&nbsp;·&nbsp;&nbsp; Asphalt &nbsp;&nbsp;·&nbsp;&nbsp; Adventure</p>
+    <div class="hero-actions">
+      <a href="#rides" class="btn-orange">Upcoming Rides</a>
+      <a href="#about" class="btn-outline-white">Our Story</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ── STATS ─────────────────────────────────────── -->
+<div id="stats">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <span class="stat-icon">🏍️</span>
+      <div class="stat-num"><span class="count-up" data-target="50">0</span>+</div>
+      <div class="stat-label">Active Riders</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-icon">🛣️</span>
+      <div class="stat-num"><span class="count-up" data-target="30">0</span>+</div>
+      <div class="stat-label">Rides Completed</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-icon">⛰️</span>
+      <div class="stat-num"><span class="count-up" data-target="15">0</span>+</div>
+      <div class="stat-label">States Explored</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-icon">🤝</span>
+      <div class="stat-num">1</div>
+      <div class="stat-label">Brotherhood</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ABOUT ─────────────────────────────────────── -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+
+      <div class="about-visual">
+        <div class="about-logo-showcase">
+          <div class="about-corner tl"></div>
+          <div class="about-corner tr"></div>
+          <div class="about-corner bl"></div>
+          <div class="about-corner br"></div>
+          <img src="logo.PNG" alt="Throttle Trekkers Crest" />
+        </div>
+      </div>
+
+      <div class="about-text">
+        <span class="section-tag">Who We Are</span>
+        <h2 class="section-title">BORN ON<br>THE ROAD</h2>
+        <p class="section-lead">
+          Throttle Trekkers is a passionate motorcycle community united by a shared love for the open road, wild terrains, and the brotherhood that forms when engines roar together. We ride not just to reach a destination — we ride to feel alive.
+        </p>
+        <p class="section-lead" style="margin-top:14px;">
+          From weekend canyon runs to multi-day Himalayan expeditions, every ride tells a story. Every rider carries a piece of that story with them. Our crest says it all — a trekker on foot, a rider on dirt, and mountains that dare you to conquer them.
+        </p>
+        <div class="about-values">
+          <div class="value-card">
+            <span class="value-icon">🤝</span>
+            <h4>Brotherhood</h4>
+            <p>Every rider is family. We look out for each other on and off the road.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">🪖</span>
+            <h4>Safety First</h4>
+            <p>Gear up, ride smart. No hero on the road — only responsible riders.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">🗺️</span>
+            <h4>Exploration</h4>
+            <p>New roads, new horizons. Every trail is an invitation.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">🌿</span>
+            <h4>Respect</h4>
+            <p>For the road, for locals, for the environment, for each other.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ─────────────────────────────────── -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="gallery-header">
+      <div>
+        <span class="section-tag">Moments Captured</span>
+        <h2 class="section-title">RIDE<br>MEMORIES</h2>
+      </div>
+      <a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank" class="btn-outline-white">
+        View on Instagram ↗
+      </a>
+    </div>
+
+    <!-- 
+      TO ADD REAL PHOTOS: Replace each <div class="g-ph">...</div> with:
+      <img src="your-photo.jpg" alt="description" loading="lazy">
+      Put your photos in the same folder as index.html
+    -->
+    <div class="gallery-grid">
+      <div class="g-item g-1">
+        <div class="g-ph"><span>🏍️</span>Group Ride</div>
+        <span class="g-label">Group Ride</span>
+      </div>
+      <div class="g-item g-2">
+        <div class="g-ph"><span>⛰️</span>Mountain Pass</div>
+        <span class="g-label">Mountain Pass</span>
+      </div>
+      <div class="g-item g-3">
+        <div class="g-ph"><span>🌅</span>Sunset</div>
+        <span class="g-label">Sunset Ride</span>
+      </div>
+      <div class="g-item g-4">
+        <div class="g-ph"><span>🛣️</span>Highway Run</div>
+        <span class="g-label">Highway Run</span>
+      </div>
+      <div class="g-item g-5">
+        <div class="g-ph"><span>🔥</span>Camp Night</div>
+        <span class="g-label">Campfire Night</span>
+      </div>
+      <div class="g-item g-6">
+        <div class="g-ph"><span>🚦</span>Convoy</div>
+        <span class="g-label">Convoy</span>
+      </div>
+      <div class="g-item g-7">
+        <div class="g-ph"><span>🌄</span>Off-Road</div>
+        <span class="g-label">Off-Road Trail</span>
+      </div>
+      <div class="g-item g-8">
+        <div class="g-ph"><span>☕</span>Pit Stop</div>
+        <span class="g-label">Pit Stop</span>
+      </div>
+    </div>
+
+    <p class="gallery-note">
+      📸 Add your ride photos: drop image files next to <code>index.html</code> and replace the placeholders above. &nbsp;|&nbsp;
+      <a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank">See all photos on Instagram →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ── RIDES ─────────────────────────────────────── -->
+<section id="rides">
+  <div class="section-inner">
+    <div class="rides-intro">
+      <div>
+        <span class="section-tag">Hit the Road</span>
+        <h2 class="section-title">UPCOMING<br>RIDES</h2>
+      </div>
+      <a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank" class="btn-orange">
+        All Events ↗
+      </a>
+    </div>
+
+    <div class="rides-grid">
+
+      <div class="ride-card">
+        <div class="ride-card-img">
+          <div class="g-ph"><span>🌿</span></div>
+          <span class="ride-tag">Weekend Ride</span>
+        </div>
+        <div class="ride-body">
+          <p class="ride-date">July 12, 2026</p>
+          <h3 class="ride-name">Coorg Coffee Trail</h3>
+          <p class="ride-desc">Wind through misty coffee estates and rain-washed ghats on a scenic 2-day loop through South India's most beautiful roads.</p>
+          <div class="ride-meta">
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Bangalore → Coorg
+            </span>
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              2 Days
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ride-card">
+        <div class="ride-card-img">
+          <div class="g-ph"><span>🏔️</span></div>
+          <span class="ride-tag">Long Ride</span>
+        </div>
+        <div class="ride-body">
+          <p class="ride-date">August 5, 2026</p>
+          <h3 class="ride-name">Leh Ladakh Expedition</h3>
+          <p class="ride-desc">The ultimate bucket-list ride. 14 days across the Himalayas through the highest motorable roads on Earth. For the brave at heart.</p>
+          <div class="ride-meta">
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Manali → Leh
+            </span>
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              14 Days
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ride-card">
+        <div class="ride-card-img">
+          <div class="g-ph"><span>🌊</span></div>
+          <span class="ride-tag">Club Ride</span>
+        </div>
+        <div class="ride-body">
+          <p class="ride-date">September 20, 2026</p>
+          <h3 class="ride-name">Sunset Coast Cruise</h3>
+          <p class="ride-desc">Salt air, coastal roads, and the crew. A weekend blitz down the Konkan coast ending with Goa sunsets and good vibes.</p>
+          <div class="ride-meta">
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Pune → Goa
+            </span>
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              3 Days
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── JOIN CTA ──────────────────────────────────── -->
+<section id="join">
+  <div class="section-inner">
+    <span class="section-tag">Open Throttle</span>
+    <h2 class="section-title">RIDE WITH<br>THE PACK</h2>
+    <p>Whether you're a seasoned tourer or just getting your first set of leathers, the Throttle Trekkers family has a seat for you. Join us, ride with us, belong.</p>
+    <a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank" class="btn-navy">
+      Join the Community →
+    </a>
+  </div>
+</section>
+
+<!-- ── RIDER CODE ────────────────────────────────── -->
+<section id="code">
+  <div class="section-inner">
+    <div class="code-layout">
+
+      <div>
+        <span class="section-tag">How We Ride</span>
+        <h2 class="section-title">RIDER<br>CODE</h2>
+        <div class="code-rules">
+          <div class="code-rule">
+            <div class="rule-num">01</div>
+            <div class="rule-body">
+              <h4>Gear Up Every Time</h4>
+              <p>Helmet, gloves, jacket — no exceptions. Riding gear is a sign of respect for your life and your crew's peace of mind.</p>
+            </div>
+          </div>
+          <div class="code-rule">
+            <div class="rule-num">02</div>
+            <div class="rule-body">
+              <h4>No Rider Left Behind</h4>
+              <p>We ride as a pack and finish as a pack. Watch your mirrors, check on the rider behind you.</p>
+            </div>
+          </div>
+          <div class="code-rule">
+            <div class="rule-num">03</div>
+            <div class="rule-body">
+              <h4>Respect the Road</h4>
+              <p>Follow traffic rules. Respect pedestrians, animals, and other vehicles. Our reputation rides on the road with us.</p>
+            </div>
+          </div>
+          <div class="code-rule">
+            <div class="rule-num">04</div>
+            <div class="rule-body">
+              <h4>Zero Tolerance for Alcohol</h4>
+              <p>Not a drop before a ride. We ride clear-headed or we don't ride at all.</p>
+            </div>
+          </div>
+          <div class="code-rule">
+            <div class="rule-num">05</div>
+            <div class="rule-body">
+              <h4>Community Over Ego</h4>
+              <p>No showboating, no reckless overtakes. We ride to enjoy and connect — not to impress.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-shield">
+        <div class="shield-wrap">
+          <div class="shield-ring"></div>
+          <div class="shield-ring2"></div>
+          <img src="logo.PNG" alt="Throttle Trekkers Crest" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── INSTAGRAM ─────────────────────────────────── -->
+<section id="instagram">
+  <div class="section-inner">
+    <div class="ig-header">
+      <span class="section-tag" style="display:block;">Follow Our Journey</span>
+      <h2 class="section-title">ON INSTAGRAM</h2>
+      <a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank" class="ig-handle-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+        </svg>
+        @throttle_trekkers_official
+      </a>
+    </div>
+
+    <!--
+      TO EMBED REAL IG POSTS: Replace each .ig-ph div with:
+      <img src="post1.jpg" alt="" style="width:100%;height:100%;object-fit:cover;">
+    -->
+    <div class="ig-grid">
+      <div class="ig-cell"><div class="ig-ph">🏍️</div><div class="ig-cell-over">VIEW POST</div></div>
+      <div class="ig-cell"><div class="ig-ph">⛰️</div><div class="ig-cell-over">VIEW POST</div></div>
+      <div class="ig-cell"><div class="ig-ph">🌅</div><div class="ig-cell-over">VIEW POST</div></div>
+      <div class="ig-cell"><div class="ig-ph">🛣️</div><div class="ig-cell-over">VIEW POST</div></div>
+      <div class="ig-cell"><div class="ig-ph">🔥</div><div class="ig-cell-over">VIEW POST</div></div>
+      <div class="ig-cell"><div class="ig-ph">🏕️</div><div class="ig-cell-over">VIEW POST</div></div>
+      <div class="ig-cell"><div class="ig-ph">🌄</div><div class="ig-cell-over">VIEW POST</div></div>
+      <div class="ig-cell"><div class="ig-ph">👊</div><div class="ig-cell-over">VIEW POST</div></div>
+    </div>
+
+    <div class="ig-cta">
+      <a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank" class="btn-orange">
+        Follow @throttle_trekkers_official
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="logo.PNG" alt="Throttle Trekkers" />
+        <p>A brotherhood of riders united by the open road, wild terrains, and the unbreakable bond that only miles together can forge. Gear up. Ride on.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank" class="soc-btn" title="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <a href="#" class="soc-btn" title="WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            </svg>
+          </a>
+          <a href="#" class="soc-btn" title="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+              <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Navigate</h5>
+        <a href="#about">About Us</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#rides">Upcoming Rides</a>
+        <a href="#code">Rider Code</a>
+        <a href="#instagram">Instagram</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Ride Types</h5>
+        <a href="#rides">Weekend Rides</a>
+        <a href="#rides">Long Expeditions</a>
+        <a href="#rides">Mountain Trails</a>
+        <a href="#rides">Coastal Cruises</a>
+        <a href="#rides">Club Meets</a>
+      </div>
+
+      <div class="footer-col">
+        <h5>Connect</h5>
+        <a href="https://www.instagram.com/throttle_trekkers_official/" target="_blank">Instagram DM</a>
+        <a href="#">WhatsApp Group</a>
+        <a href="#">Email Us</a>
+        <a href="#join">Join the Crew</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <img src="logo.PNG" alt="TT" class="logo-sm" />
+      <span>© 2026 Throttle Trekkers. All rights reserved.</span>
+      <span>Built with ❤️ &amp; full throttle</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* NAV scroll effect */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.style.background = window.scrollY > 60
+      ? 'rgba(10,17,40,0.99)'
+      : 'rgba(10,17,40,0.94)';
+  });
+
+  /* Mobile menu */
+  document.getElementById('menuToggle').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.add('open');
+  });
+  document.getElementById('menuClose').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.remove('open');
+  });
+  function closeMob() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  /* Count-up animation */
+  const counters = document.querySelectorAll('.count-up');
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = +el.dataset.target;
+      const duration = 1800;
+      const stepTime = duration / target;
+      let current = 0;
+      const timer = setInterval(() => {
+        current++;
+        el.textContent = current;
+        if (current >= target) clearInterval(timer);
+      }, stepTime);
+      countObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => countObs.observe(c));
+
+  /* Scroll reveal */
+  const revealItems = document.querySelectorAll(
+    '.ride-card, .value-card, .code-rule, .ig-cell, .g-item, .stat-item'
+  );
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, i * 55);
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  revealItems.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(22px)';
+    el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+    revealObs.observe(el);
+  });
+</script>
+</body>
+</html>
